@@ -1,0 +1,7 @@
+Feel free to open a pull request for either part of the software.
+
+All I ask you for is to follow the PSR code style guidelines and to
+offer Unit Tests if you do some work on the PHP code. And of course
+the code should be working with both php 5.6 and php 7.x
+
+Thank you for making MyProfi more awesome!
