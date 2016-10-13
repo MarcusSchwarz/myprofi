@@ -30,10 +30,12 @@ class Helper
      * Output program usage doc and die
      *
      * @param string $msg - describing message
+     *
+     * @return string
      */
-    public static function doc($msg = null)
+    public function doc($msg = null)
     {
-        file_put_contents('php://stderr', (!is_null($msg) ? ($msg . "\n\n") : '') .
+        $message = (null !== $msg ? ($msg . "\n\n") : '') .
 
             'MyProfi: mysql log profiler and analyzer
 
@@ -67,9 +69,18 @@ Options:
 
 Example:
 	php parser.php -csv -top 10 -type "select, update" general_log.csv
-');
-        exit;
+';
+
+        return $this->output($message);
     }
 
-
+    /**
+     * @param string $message
+     * @return string
+     */
+    protected function output($message)
+    {
+        file_put_contents('php://stderr', $message);
+        exit;
+    }
 }

@@ -45,8 +45,8 @@ abstract class Filereader
      */
     public function __construct($filename)
     {
-        if (false === ($this->fp = @fopen($filename, "rb"))) {
-            \MyProfi\Helper::doc('Error: cannot open input file ' . $filename);
+        if (false === ($this->fp = @fopen($filename, 'rb'))) {
+            (new \MyProfi\Helper())->doc('Error: cannot open input file ' . $filename);
         }
     }
 

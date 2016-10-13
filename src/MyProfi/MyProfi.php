@@ -42,14 +42,14 @@ class MyProfi
      *
      * @var integer
      */
-    protected $top = null;
+    protected $top;
 
     /**
      * Only queries of these types to calculate
      *
      * @var array
      */
-    protected $types = null;
+    protected $types;
 
     /**
      * Will the input file be treated as CSV formatted
@@ -99,7 +99,7 @@ class MyProfi
      *
      * @param \MyProfi\Reader\IQueryFetcher $prov
      */
-    protected function set_data_provider(\MyProfi\Reader\IQueryFetcher $prov)
+    protected function setDataProvider(\MyProfi\Reader\IQueryFetcher $prov)
     {
         $this->fetcher = $prov;
     }
@@ -148,7 +148,7 @@ class MyProfi
      */
     public function slow($slow = null)
     {
-        if (is_null($slow)) {
+        if (null === $slow) {
             return $this->slow;
         }
 
@@ -170,15 +170,18 @@ class MyProfi
      *
      * @param string $filename
      */
-    public function set_input_file($filename)
+    public function setInputFile($filename)
     {
-        if (!$this->csv && (strcasecmp(".csv", substr($filename, -4)) === 0)) {
+        if (!$this->csv && (strcasecmp('.csv', substr($filename, -4)) === 0)) {
             $this->csv(true);
         }
 
         $this->filename = $filename;
     }
 
+    /**
+     * @param $sort
+     */
     public function sortby($sort)
     {
         $this->sort = $sort;
@@ -188,18 +191,18 @@ class MyProfi
      * The main routine so count statistics
      *
      */
-    public function process_queries()
+    public function processQueries()
     {
         if ($this->csv) {
             if ($this->slow) {
-                $this->set_data_provider(new \MyProfi\Reader\SlowCsvReader($this->filename));
+                $this->setDataProvider(new \MyProfi\Reader\SlowCsvReader($this->filename));
             } else {
-                $this->set_data_provider(new \MyProfi\Reader\CsvReader($this->filename));
+                $this->setDataProvider(new \MyProfi\Reader\CsvReader($this->filename));
             }
         } elseif ($this->slow) {
-            $this->set_data_provider(new \MyProfi\Reader\SlowExtractor($this->filename));
+            $this->setDataProvider(new \MyProfi\Reader\SlowExtractor($this->filename));
         } else {
-            $this->set_data_provider(new \MyProfi\Reader\Extractor($this->filename));
+            $this->setDataProvider(new \MyProfi\Reader\Extractor($this->filename));
         }
 
         // counters
@@ -228,7 +231,7 @@ class MyProfi
             // keep query sample
             $smpl = $line;
 
-            if ('' == ($line = self::normalize($line))) {
+            if ('' === ($line = self::normalize($line))) {
                 continue;
             }
 
@@ -236,7 +239,7 @@ class MyProfi
             $t = preg_split("/[\\W]/", $line, 2);
             $type = $t[0];
 
-            if (!is_null($prefx) && !isset($prefx[$type])) {
+            if (null !== $prefx && !isset($prefx[$type])) {
                 continue;
             }
 
@@ -307,7 +310,7 @@ class MyProfi
 
         arsort($types);
 
-        if (!is_null($this->top)) {
+        if (null !== $this->top) {
             if ($this->sort) {
                 $stats = array_slice($stats, 0, $this->top);
             } else {
@@ -325,11 +328,20 @@ class MyProfi
         $this->total = $i;
     }
 
-    public function get_types_stat()
+    /**
+     * @return \ArrayIterator
+     */
+    public function getTypesStat()
     {
         return new \ArrayIterator($this->_types);
     }
 
+    /**
+     * @param $a
+     * @param $b
+     *
+     * @return int
+     */
     protected function cmp($a, $b)
     {
         $f = $a[$this->sort];
@@ -338,7 +350,10 @@ class MyProfi
         return ($f < $s) ? 1 : ($f > $s ? -1 : 0);
     }
 
-    public function get_pattern_stats()
+    /**
+     * @return array|bool
+     */
+    public function getPatternStats()
     {
         $stat = [];
 
@@ -364,6 +379,9 @@ class MyProfi
         }
     }
 
+    /**
+     * @return int
+     */
     public function total()
     {
         return $this->total;
@@ -385,15 +403,11 @@ class MyProfi
         $query = preg_replace("/(\\W)null(?:\\Wnull)*(\\W|\$)/i", "\\1{}\\2", $query); // remove nulls
         $query = str_replace(["\\n", "\\t", "\\0"], ' ', $query);                 // replace escaped linebreaks
         $query = preg_replace("/\\s+/", ' ', $query);                                  // remove multiple spaces
-        $query = preg_replace("/ (\\W)/", "\\1",
-            $query);                              // remove spaces bordering with non-characters
+        $query = preg_replace("/ (\\W)/", "\\1", $query);                              // remove spaces bordering with non-characters
         $query = preg_replace("/(\\W) /", "\\1", $query);                              // --,--
         $query = preg_replace("/\\{\\}(?:,?\\{\\})+/", "{}", $query);                  // repetitive {},{} to single {}
-        $query = preg_replace("/\\(\\{\\}\\)(?:,\\(\\{\\}\\))+/", "({})",
-            $query);     // repetitive ({}),({}) to single ({})
+        $query = preg_replace("/\\(\\{\\}\\)(?:,\\(\\{\\}\\))+/", "({})", $query);     // repetitive ({}),({}) to single ({})
         $query = strtolower(trim($query, " \t\n)("));                                  // trim spaces and strtolower
         return $query;
     }
-
-
 }

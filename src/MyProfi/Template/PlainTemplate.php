@@ -31,11 +31,19 @@ class PlainTemplate implements ITemplate
         printf("Queries by type:\n================\n");
     }
 
+    /**
+     * @param string $type
+     * @param int    $num
+     * @param float  $percent
+     */
     public function minirow($type, $num, $percent)
     {
         printf("% -20s % -10s [%5s%%] \n", $type, number_format($num, 0, '', ' '), number_format($percent, 2));
     }
 
+    /**
+     * @param int $total
+     */
     public function minifooter($total)
     {
         printf("---------------\nTotal: %s queries\n\n\n", number_format($total, 0, '', ' '));
@@ -46,14 +54,32 @@ class PlainTemplate implements ITemplate
         printf("Queries by pattern:\n===================\n");
     }
 
+    /**
+     * @param int    $ornum
+     * @param string $num
+     * @param string $percent
+     * @param string $query
+     * @param bool   $sort
+     * @param bool   $smpl
+     */
     public function mainrow($ornum, $num, $percent, $query, $sort = false, $smpl = false)
     {
         if ($sort) {
-            printf("%d.\t% -10s [%10s] - %s\n", $ornum, number_format($num, 0, '', ' '), number_format($percent, 2),
-                $query);
+            printf(
+                "%d.\t% -10s [%10s] - %s\n",
+                $ornum,
+                number_format($num, 0, '', ' '),
+                number_format($percent, 2),
+                $query
+            );
         } else {
-            printf("%d.\t% -10s [% 5s%%] - %s\n", $ornum, number_format($num, 0, '', ' '), number_format($percent, 2),
-                $query);
+            printf(
+                "%d.\t% -10s [% 5s%%] - %s\n",
+                $ornum,
+                number_format($num, 0, '', ' '),
+                number_format($percent, 2),
+                $query
+            );
         }
 
         if ($smpl) {
@@ -61,6 +87,9 @@ class PlainTemplate implements ITemplate
         }
     }
 
+    /**
+     * @param int $total
+     */
     public function mainfooter($total)
     {
         printf("---------------\nTotal: %s patterns", number_format($total, 0, '', ' '));

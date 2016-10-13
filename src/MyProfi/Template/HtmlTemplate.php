@@ -30,22 +30,36 @@ class HtmlTemplate implements ITemplate
     {
         printf('<html><head><title>MyProfi Report</title>
 <style type="text/css">
-	* { font-size: 10px; font-family: Verdana }
+	* { font-size: 10px; font-family: Verdana, sans-serif }
 	thead * {font-weight:bold}
 </style></head><body>');
         printf('<table border="1"><thead><tr><td colspan="3">Queries by type:</td></tr></thead><tbody>');
     }
 
+    /**
+     * @param string $type
+     * @param int    $num
+     * @param double $percent
+     */
     public function minirow($type, $num, $percent)
     {
-        printf("<tr><td>%s</td><td>%s</td><td>%s%%</td></tr>", htmlspecialchars($type), number_format($num, 0, '', ' '),
-            number_format($percent, 2));
+        printf(
+            '<tr><td>%s</td><td>%s</td><td>%s%%</td></tr>',
+            htmlspecialchars($type),
+            number_format($num, 0, '', ' '),
+            number_format($percent, 2)
+        );
     }
 
+    /**
+     * @param int $total
+     */
     public function minifooter($total)
     {
-        printf('</tbody><tfoot><tr><td colspan="4">Total: %s queries</td></tr></tfoot></table>',
-            number_format($total, 0, '', ' '));
+        printf(
+            '</tbody><tfoot><tr><td colspan="4">Total: %s queries</td></tr></tfoot></table>',
+            number_format($total, 0, '', ' ')
+        );
     }
 
     public function mainheader()
@@ -54,25 +68,50 @@ class HtmlTemplate implements ITemplate
         printf('<tr><td>#</td><td>Qty</td><td>%%</td><td>Query</td></tr></thead><tbody>');
     }
 
+    /**
+     * @param int    $ornum
+     * @param string $num
+     * @param string $percent
+     * @param string $query
+     * @param bool   $sort
+     * @param bool   $smpl
+     */
     public function mainrow($ornum, $num, $percent, $query, $sort = false, $smpl = false)
     {
         if ($sort) {
-            printf('<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>', $ornum, $num, $percent,
-                htmlspecialchars($query));
+            printf(
+                '<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+                $ornum,
+                $num,
+                $percent,
+                htmlspecialchars($query)
+            );
         } else {
-            printf('<tr><td>%d</td><td>%s</td><td>%s%%</td><td>%s</td></tr>', $ornum, $num, $percent,
-                htmlspecialchars($query));
+            printf(
+                '<tr><td>%d</td><td>%s</td><td>%s%%</td><td>%s</td></tr>',
+                $ornum,
+                $num,
+                $percent,
+                htmlspecialchars($query)
+            );
         }
 
         if ($smpl) {
-            printf('<tr><td colspan="4"><textarea style="width:100%%" onClick="javascript:this.focus();this.select();">%s</textarea></td></tr>',
-                htmlspecialchars($smpl));
+            printf(
+                '<tr><td colspan="4"><textarea style="width:100%%" onClick="javascript:this.focus();this.select();">%s</textarea></td></tr>',
+                htmlspecialchars($smpl)
+            );
         }
     }
 
+    /**
+     * @param int $total
+     */
     public function mainfooter($total)
     {
-        printf('</tbody><tfoot><tr><td colspan="4">Total: %s patterns</td></tr></tfoot></table></body></html>',
-            number_format($total, 0, '', ' '));
+        printf(
+            '</tbody><tfoot><tr><td colspan="4">Total: %s patterns</td></tr></tfoot></table></body></html>',
+            number_format($total, 0, '', ' ')
+        );
     }
 }

@@ -35,16 +35,16 @@ class CsvReader extends Filereader implements IQueryFetcher
      *
      * @return string - or FALSE on file end
      */
-    public function get_query()
+    public function getQuery()
     {
         while (false !== ($data = fgetcsv($this->fp))) {
-            if ((!isset($data[4])) || (($data[4] !== "Query") && ($data[4] !== "Execute")) || (!$data[5])) {
+            if ((!isset($data[4])) || (($data[4] !== 'Query') && ($data[4] !== 'Execute')) || (!$data[5])) {
                 continue;
             }
 
             // cut statement id from prefix of prepared statement
             $d5 = $data[5];
-            $query = ('Execute' == $data[4] ? substr($d5, strpos($d5, ']') + 1) : $d5);
+            $query = ('Execute' === $data[4] ? substr($d5, strpos($d5, ']') + 1) : $d5);
 
             return str_replace(["\\\\", '\\"'], ["\\", '"'], $query);
         }

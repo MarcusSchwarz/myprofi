@@ -35,7 +35,7 @@ class Extractor extends Filereader implements IQueryFetcher
      *
      * @return string
      */
-    public function get_query()
+    public function getQuery()
     {
         static $newline;
 
@@ -48,7 +48,7 @@ class Extractor extends Filereader implements IQueryFetcher
             $line = rtrim($line, "\r\n");
 
             // skip server start log lines
-            if (substr($line, -13) == "started with:") {
+            if (substr($line, -13) === 'started with:') {
                 fgets($fp); // skip TCP Port: 3306, Named Pipe: (null)
                 fgets($fp); // skip Time                 Id Command    Argument
                 continue;
@@ -65,28 +65,27 @@ class Extractor extends Filereader implements IQueryFetcher
                             break 2;
                         } else {
                             $return = ltrim(substr($line, strpos($line, "Q") + 5), " \t");
-                            break;
                         }
+                        break;
                     case 'Execute':
                         if ($return) {
                             $newline = ltrim(substr($line, strpos($line, ']') + 1), " \t");
                             break 2;
                         } else {
                             $return = ltrim(substr($line, strpos($line, ']') + 1), " \t");
-                            break;
                         }
+                        break;
                     default:
                         if ($return) {
                             break 2;
-                        } else {
-                            break;
                         }
+                        break;
                 }
             } else {
                 $return .= $line;
             }
         }
 
-        return ($return === '' || is_null($return) ? false : $return);
+        return ($return === '' || null === $return ? false : $return);
     }
 }

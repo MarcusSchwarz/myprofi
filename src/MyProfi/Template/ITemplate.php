@@ -28,13 +28,32 @@ interface ITemplate
 
     public function miniheader();
 
+    /**
+     * @param string $type
+     * @param int    $num
+     * @param double $percent
+     */
     public function minirow($type, $num, $percent);
 
+    /**
+     * @param int $total
+     */
     public function minifooter($total);
 
     public function mainheader();
 
+    /**
+     * @param int    $ornum
+     * @param string $num
+     * @param string $percent
+     * @param string $query
+     * @param bool   $sort
+     * @param bool   $smpl
+     */
     public function mainrow($ornum, $num, $percent, $query, $sort = false, $smpl = false);
 
+    /**
+     * @param int $total
+     */
     public function mainfooter($total);
 }

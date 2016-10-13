@@ -35,15 +35,15 @@ class SlowCsvReader extends Filereader implements IQueryFetcher
      *
      * @return string - or FALSE on file end
      */
-    public function get_query()
+    public function getQuery()
     {
         while (false !== ($data = fgetcsv($this->fp))) {
             if (!isset($data[10])) {
                 continue;
             }
 
-            $query_time = self::time_to_int($data[2]);
-            $lock_time = self::time_to_int($data[3]);
+            $query_time = self::timeToInt($data[2]);
+            $lock_time = self::timeToInt($data[3]);
             $rows_sent = $data[4];
             $rows_examined = $data[5];
 
@@ -71,7 +71,7 @@ class SlowCsvReader extends Filereader implements IQueryFetcher
      *
      * @return integer
      */
-    protected static function time_to_int($time)
+    protected static function timeToInt($time)
     {
         list($h, $m, $s) = explode(':', $time);
 

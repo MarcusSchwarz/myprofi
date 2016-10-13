@@ -33,7 +33,6 @@ interface IQueryFetcher
 
     /**
      * Get next query in the flow
-     *
      */
-    public function get_query();
+    public function getQuery();
 }

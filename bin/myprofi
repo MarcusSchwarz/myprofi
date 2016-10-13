@@ -65,7 +65,7 @@ $fields = [
 if (isset($argv[1])) {
     $file = array_pop($argv);
 } else {
-    \MyProfi\Helper::doc('Error: no input file specified');
+    (new \MyProfi\Helper())->doc('Error: no input file specified');
 }
 
 // get rid of program filename ($argvs[0])
@@ -85,18 +85,18 @@ while (null !== ($com = array_shift($argv))) {
     switch ($com) {
         case '-top':
             if (is_null($top = array_shift($argv))) {
-                \MyProfi\Helper::doc('Error: must specify the number of top queries to output');
+                (new \MyProfi\Helper())->doc('Error: must specify the number of top queries to output');
             }
 
             if (!($top = (int)$top)) {
-                \MyProfi\Helper::doc('Error: top number must be integer value');
+                (new \MyProfi\Helper())->doc('Error: top number must be integer value');
             }
             $myprofi->top($top);
             break;
 
         case '-type':
             if (is_null($prefx = array_shift($argv))) {
-                \MyProfi\Helper::doc('Error: must specify coma separated list of query types to output');
+                (new \MyProfi\Helper())->doc('Error: must specify coma separated list of query types to output');
             }
             $myprofi->types($prefx);
             break;
@@ -120,9 +120,9 @@ while (null !== ($com = array_shift($argv))) {
 
         case '-sort':
             if (is_null($sort = array_shift($argv))) {
-                \MyProfi\Helper::doc('Error: must specify criteria to sort by');
+                (new \MyProfi\Helper())->doc('Error: must specify criteria to sort by');
             } elseif (false === array_search($sort, $fields)) {
-                \MyProfi\Helper::doc('Unknown sorting field "' . $sort . '"');
+                (new \MyProfi\Helper())->doc('Unknown sorting field "' . $sort . '"');
             }
             $myprofi->sortby($sort);
             break;
@@ -133,8 +133,8 @@ if (!$myprofi->slow() && $sort) {
     $myprofi->sortby(false);
 }
 
-$myprofi->set_input_file($file);
-$myprofi->process_queries();
+$myprofi->setInputFile($file);
+$myprofi->processQueries();
 
 $i = $myprofi->total();
 $j = 1;
@@ -143,7 +143,7 @@ $tmpl = ($html ? new \MyProfi\Template\HtmlTemplate() : new \MyProfi\Template\Pl
 
 $tmpl->miniheader();
 
-foreach ($myprofi->get_types_stat() as $type => $num) {
+foreach ($myprofi->getTypesStat() as $type => $num) {
     $tmpl->minirow($type, $num, 100 * $num / $i);
 }
 
@@ -151,7 +151,7 @@ $tmpl->minifooter($i);
 
 $tmpl->mainheader();
 
-while (list($num, $query, $smpl, $stats) = $myprofi->get_pattern_stats()) {
+while (list($num, $query, $smpl, $stats) = $myprofi->getPatternStats()) {
     if ($sort) {
         $n = $stats[$sort];
         $tmpl->mainrow($j, $num, $n, $query, true, $smpl);

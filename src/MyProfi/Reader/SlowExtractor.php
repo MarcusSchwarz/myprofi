@@ -37,7 +37,7 @@ class SlowExtractor extends Filereader implements IQueryFetcher
      *
      * @return string
      */
-    public function get_query()
+    public function getQuery()
     {
         $currstatement = '';
 
@@ -46,7 +46,7 @@ class SlowExtractor extends Filereader implements IQueryFetcher
         while (($line = fgets($fp))) {
             $line = rtrim($line, "\r\n");
 
-            if (($smth = $this->is_separator($line, $fp))) {
+            if (($smth = $this->isSeparator($line, $fp))) {
                 if (is_array($smth)) {
                     $this->stat = $smth;
                 }
@@ -66,7 +66,13 @@ class SlowExtractor extends Filereader implements IQueryFetcher
         }
     }
 
-    protected function is_separator(&$line, $fp)
+    /**
+     * @param $line
+     * @param $fp
+     *
+     * @return array|bool
+     */
+    protected function isSeparator(&$line, $fp)
     {
         // skip server start log lines
         /*
@@ -74,7 +80,7 @@ class SlowExtractor extends Filereader implements IQueryFetcher
           Tcp port: 3306  Unix socket: /var/lib/mysql/mysqldb/mysql.sock
           Time                 Id Command    Argument
           */
-        if (substr($line, -13) == "started with:") {
+        if (substr($line, -13) === 'started with:') {
             fgets($fp); // skip TCP Port: 3306, Named Pipe: (null)
             fgets($fp); // skip Time                 Id Command    Argument
             return true;
@@ -98,8 +104,11 @@ class SlowExtractor extends Filereader implements IQueryFetcher
 
             // floating point numbers matching is needed for
             // www.mysqlperformanceblog.com slow query patch
-            preg_match('/Query_time: +(\\d*(?:\\.\\d+)?) +Lock_time: +(\\d*(?:\\.d+)?) +Rows_sent: +(\\d*?) +Rows_examined: +(\\d*?)/',
-                $line, $matches);
+            preg_match(
+                '/Query_time: +(\\d*(?:\\.\\d+)?) +Lock_time: +(\\d*(?:\\.d+)?) +Rows_sent: +(\\d*?) +Rows_examined: +(\\d*?)/',
+                $line,
+                $matches
+            );
 
             // shift the whole matched string element
             // leaving only numbers we need
