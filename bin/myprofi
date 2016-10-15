@@ -37,7 +37,6 @@ require_once $autoloaderFilename;
 if (!isset($argv)) {
     $argv = [
         __FILE__,
-//		'-slow',
         '-sort',
         'qt_total',
         '-top',
@@ -61,6 +60,11 @@ $fields = [
     're_max',
 ];
 
+$file = '';
+$sample = false;
+$sort   = false;
+$html   = false;
+
 // the last argument always must be an input filename
 if (isset($argv[1])) {
     $file = array_pop($argv);
@@ -74,17 +78,11 @@ array_shift($argv);
 // initialize an object
 $myprofi = new \MyProfi\MyProfi();
 
-$sample = false;
-
-$sort = false;
-
-$html = false;
-
 // iterating through command line options
 while (null !== ($com = array_shift($argv))) {
     switch ($com) {
         case '-top':
-            if (is_null($top = array_shift($argv))) {
+            if (null === ($top = array_shift($argv))) {
                 (new \MyProfi\Helper())->doc('Error: must specify the number of top queries to output');
             }
 
@@ -95,7 +93,7 @@ while (null !== ($com = array_shift($argv))) {
             break;
 
         case '-type':
-            if (is_null($prefx = array_shift($argv))) {
+            if (null === ($prefx = array_shift($argv))) {
                 (new \MyProfi\Helper())->doc('Error: must specify coma separated list of query types to output');
             }
             $myprofi->types($prefx);
@@ -119,7 +117,7 @@ while (null !== ($com = array_shift($argv))) {
             break;
 
         case '-sort':
-            if (is_null($sort = array_shift($argv))) {
+            if (null === ($sort = array_shift($argv))) {
                 (new \MyProfi\Helper())->doc('Error: must specify criteria to sort by');
             } elseif (false === array_search($sort, $fields)) {
                 (new \MyProfi\Helper())->doc('Unknown sorting field "' . $sort . '"');

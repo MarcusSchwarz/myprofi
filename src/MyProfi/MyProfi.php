@@ -33,7 +33,7 @@ class MyProfi
     /**
      * Query fetcher class
      *
-     * @var mixed
+     * @var \MyProfi\Reader\IQueryFetcher
      */
     protected $fetcher;
 
@@ -398,15 +398,15 @@ class MyProfi
     {
         $query = $q;
         $query = preg_replace("/\\/\\*.*\\*\\//sU", '', $query);                       // remove multiline comments
-        $query = preg_replace("/([\"'])(?:\\\\.|\"\"|''|.)*\\1/sU", "{}", $query);     // remove quoted strings
+        $query = preg_replace("/([\"'])(?:\\\\.|\"\"|''|.)*\\1/sU", '{}', $query);     // remove quoted strings
         $query = preg_replace("/(\\W)(?:-?\\d+(?:\\.\\d+)?)/", "\\1{}", $query);       // remove numbers
         $query = preg_replace("/(\\W)null(?:\\Wnull)*(\\W|\$)/i", "\\1{}\\2", $query); // remove nulls
-        $query = str_replace(["\\n", "\\t", "\\0"], ' ', $query);                 // replace escaped linebreaks
+        $query = str_replace(["\\n", "\\t", "\\0"], ' ', $query);                      // replace escaped linebreaks
         $query = preg_replace("/\\s+/", ' ', $query);                                  // remove multiple spaces
-        $query = preg_replace("/ (\\W)/", "\\1", $query);                              // remove spaces bordering with non-characters
+        $query = preg_replace("/ (\\W)/", "\\1", $query);                 // remove spaces bordering with non-characters
         $query = preg_replace("/(\\W) /", "\\1", $query);                              // --,--
-        $query = preg_replace("/\\{\\}(?:,?\\{\\})+/", "{}", $query);                  // repetitive {},{} to single {}
-        $query = preg_replace("/\\(\\{\\}\\)(?:,\\(\\{\\}\\))+/", "({})", $query);     // repetitive ({}),({}) to single ({})
+        $query = preg_replace("/\\{\\}(?:,?\\{\\})+/", '{}', $query);                  // repetitive {},{} to single {}
+        $query = preg_replace("/\\(\\{\\}\\)(?:,\\(\\{\\}\\))+/", '({})', $query);// repetitive ({}),({}) to single ({})
         $query = strtolower(trim($query, " \t\n)("));                                  // trim spaces and strtolower
         return $query;
     }
