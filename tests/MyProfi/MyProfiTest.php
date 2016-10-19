@@ -38,17 +38,27 @@ class MyProfiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Actually this does not test a "unit", but the whole process
+     * Actually these do not test a "unit", but the whole process
      * I am sure this could be done better, but for the moment [tm] it is ok
      */
-    public function testSimpleSlowYodaEventLog()
+    private function setUpSimpleSlowYodaEventLog()
     {
         $this->myprofi->setInputFile(__DIR__ . '/../logs/slow_yoda_event.log');
         $this->myprofi->slow(true);
         $this->myprofi->processQueries();
+    }
+
+    public function testSimpleSlowYodaEventLogTotal()
+    {
+        $this->setUpSimpleSlowYodaEventLog();
 
         $totalNumberOfEntries = $this->myprofi->total();
         self::assertEquals(2, $totalNumberOfEntries);
+    }
+
+    public function testSimpleSlowYodaEventLogTypesStat()
+    {
+        $this->setUpSimpleSlowYodaEventLog();
 
         self::assertCount(1, $this->myprofi->getTypesStat());
 
@@ -56,23 +66,31 @@ class MyProfiTest extends \PHPUnit_Framework_TestCase
             self::assertEquals('select', $type);
             self::assertEquals(2, $num);
         }
+    }
 
-        $patternStats = $this->myprofi->getAllPatternStats();
+    public function testSimpleSlowYodaEventLogNums()
+    {
+        $this->setUpSimpleSlowYodaEventLog();
 
-        $expected = [];
-        $expected[] = [
-            1,
-            'select*from yoda_event;',
-            false,
-            []
-        ];
-        $expected[] = [
-            1,
-            'select*from yoda_event where location={};',
-            false,
-            []
-        ];
+        $patternNums = $this->myprofi->getPatternNums();
 
-        self::assertEquals($expected, $patternStats);
+        $expectedNums = [];
+        $expectedNums['bec61a1e580942b2b0eb38cd4b5e9fc1'] = 1;
+        $expectedNums['397ccc9858a34713edf005e9d92d5e64'] = 1;
+
+        self::assertEquals($expectedNums, $patternNums);
+    }
+
+    public function testSimpleSlowYodaEventLogQueries()
+    {
+        $this->setUpSimpleSlowYodaEventLog();
+
+        $patternQueries = $this->myprofi->getPatternQueries();
+
+        $expectedQueries = [];
+        $expectedQueries['bec61a1e580942b2b0eb38cd4b5e9fc1'] = 'select*from yoda_event;';
+        $expectedQueries['397ccc9858a34713edf005e9d92d5e64'] = 'select*from yoda_event where location={};';
+
+        self::assertEquals($expectedQueries, $patternQueries);
     }
 }

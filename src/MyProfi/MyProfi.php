@@ -350,14 +350,20 @@ class MyProfi
         return ($f < $s) ? 1 : ($f > $s ? -1 : 0);
     }
 
-    public function getAllPatternStats()
+    /**
+     * @return array
+     */
+    public function getPatternNums()
     {
-        $tmp = [];
-        while ($res = $this->getPatternStats()) {
-            $tmp[] = $res;
-        }
+        return $this->_nums;
+    }
 
-        return $tmp;
+    /**
+     * @return array
+     */
+    public function getPatternQueries()
+    {
+        return $this->_queries;
     }
 
     /**
