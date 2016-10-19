@@ -3,6 +3,9 @@
 
 [![Build Status](https://travis-ci.org/MarcusSchwarz/myprofi.svg?branch=master)](https://travis-ci.org/MarcusSchwarz/myprofi)
 
+MyProfi is mysql profiler and analyzer, which outputs statistics of mostly
+used queries by reading query log file.
+
 Originally written 2006 by camka at camka@users.sourceforge.net
 
 Usage: `php myprofi.php [OPTIONS] INPUTFILE`
@@ -37,9 +40,7 @@ Example:
 
     php parser.php -csv -top 10 -type "select, update" general_log.csv
 
-
-MyProfi is mysql profiler and analizer, which outputs statistics of mostly
-used queries by reading query log file.
+MyProfi will work with php5.5 and newer.
 
 Copyright (C)
 - 2006 camka at camka@users.sourceforge.net
