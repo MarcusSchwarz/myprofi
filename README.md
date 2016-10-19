@@ -1,5 +1,7 @@
-#MyProfi
+#MyProfi v1.0.0
 ####MySQL Log Profiler and Analyzer
+
+Originally written 2006 by camka at camka@users.sourceforge.net
 
 Usage: `php myprofi.php [OPTIONS] INPUTFILE`
 
