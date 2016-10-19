@@ -220,7 +220,7 @@ class MyProfi
         $ex = $this->fetcher;
 
         // group queries by type and pattern
-        while (($line = $ex->get_query())) {
+        while (($line = $ex->getQuery())) {
             $stat = false;
 
             if (is_array($line)) {

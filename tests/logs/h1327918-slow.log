@@ -1,0 +1,14 @@
+/usr/sbin/mysqld, Version: 5.5.52-0+deb7u1 ((Debian)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 161019 21:48:33
+# User@Host: root[root] @ localhost []
+# Query_time: 0.000265  Lock_time: 0.000073 Rows_sent: 6  Rows_examined: 6
+use symfony_yoda_event;
+SET timestamp=1476906513;
+select * from yoda_event;
+# Time: 161019 21:48:53
+# User@Host: root[root] @ localhost []
+# Query_time: 0.020004  Lock_time: 0.000084 Rows_sent: 2  Rows_examined: 6
+SET timestamp=1476906533;
+select * from yoda_event where location = "endor";
