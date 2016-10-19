@@ -1,0 +1,13 @@
+Queries by type:
+================
+select               2          [100.00%] 
+---------------
+Total: 2 queries
+
+
+Queries by pattern:
+===================
+1.	1          [50.00%] - select*from yoda_event where location={};
+2.	1          [50.00%] - select*from yoda_event;
+---------------
+Total: 2 patterns

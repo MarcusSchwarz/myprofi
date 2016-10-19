@@ -76,9 +76,9 @@ class MyProfi
     /**
      * Field name to sort by
      *
-     * @var string
+     * @var boolean
      */
-    protected $sort;
+    protected $sort = false;
 
     /**
      * Input filename
@@ -348,6 +348,16 @@ class MyProfi
         $s = $b[$this->sort];
 
         return ($f < $s) ? 1 : ($f > $s ? -1 : 0);
+    }
+
+    public function getAllPatternStats()
+    {
+        $tmp = [];
+        while ($res = $this->getPatternStats()) {
+            $tmp[] = $res;
+        }
+
+        return $tmp;
     }
 
     /**
