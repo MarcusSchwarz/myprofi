@@ -1,0 +1,11 @@
+/usr/sbin/mysqld, Version: 5.6.25-73.0 (Percona Server (GPL), Release 73.0, Revision 5ccddf8). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 150803  8:51:43
+# User@Host: root[root] @ localhost []  Id: 19928868
+# Schema: yoda_event  Last_errno: 0  Killed: 0
+# Query_time: 0.000907  Lock_time: 0.000150  Rows_sent: 25  Rows_examined: 116  Rows_affected: 0
+# Bytes_sent: 266
+use symfony_yoda_event;
+SET timestamp=1476906513;
+select * from yoda_event;

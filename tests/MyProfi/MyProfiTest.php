@@ -48,6 +48,17 @@ class MyProfiTest extends \PHPUnit_Framework_TestCase
         $this->myprofi->processQueries();
     }
 
+    /**
+     * Actually these do not test a "unit", but the whole process
+     * I am sure this could be done better, but for the moment [tm] it is ok
+     */
+    private function setUpPerconaStyleShortLog()
+    {
+        $this->myprofi->setInputFile(__DIR__ . '/../logs/percona_style_short.log');
+        $this->myprofi->slow(true);
+        $this->myprofi->processQueries();
+    }
+
     public function testSimpleSlowYodaEventLogTotal()
     {
         $this->setUpSimpleSlowYodaEventLog();
@@ -90,6 +101,30 @@ class MyProfiTest extends \PHPUnit_Framework_TestCase
         $expectedQueries = [];
         $expectedQueries['bec61a1e580942b2b0eb38cd4b5e9fc1'] = 'select*from yoda_event;';
         $expectedQueries['397ccc9858a34713edf005e9d92d5e64'] = 'select*from yoda_event where location={};';
+
+        self::assertEquals($expectedQueries, $patternQueries);
+    }
+
+    public function testPerconaStyleShortLogNums()
+    {
+        $this->setUpPerconaStyleShortLog();
+
+        $patternNums = $this->myprofi->getPatternNums();
+
+        $expectedNums = [];
+        $expectedNums['bec61a1e580942b2b0eb38cd4b5e9fc1'] = 1;
+
+        self::assertEquals($expectedNums, $patternNums);
+    }
+
+    public function testPerconaStyleShortLogQueries()
+    {
+        $this->setUpPerconaStyleShortLog();
+
+        $patternQueries = $this->myprofi->getPatternQueries();
+
+        $expectedQueries = [];
+        $expectedQueries['bec61a1e580942b2b0eb38cd4b5e9fc1'] = 'select*from yoda_event;';
 
         self::assertEquals($expectedQueries, $patternQueries);
     }

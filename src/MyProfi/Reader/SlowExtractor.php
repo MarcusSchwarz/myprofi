@@ -93,8 +93,10 @@ class SlowExtractor extends Filereader implements IQueryFetcher
 
         $linestart = substr($line, 0, 14);
 
-        if (!strncmp($linestart, '# Time: ', 8)
-            || !strncmp($line, '# User@Host: ', 13)
+        if (!strncmp($linestart, '# Time: ', 8) ||
+            !strncmp($line, '# User@Host: ', 13) ||
+            !strncmp($line, '# Bytes_sent: ', 14) || // todo maybe bytes_sent could be used for the statistics
+            !strncmp($line, '# Schema: ', 10)
         ) {
             return true;
         }
